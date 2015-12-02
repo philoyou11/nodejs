@@ -28,7 +28,7 @@
 							<td><%= item.director %></td>
 							<td><%= item.country %></td>
 							<td><%= item.year %></td>
-							<td><%= moment(item.meta.createdAt).format('MM/DD/YYYY') %></td>
+							<td><%= moment.unix(item.meta.createdAt) %></td>
 							<td>
 								<a target="_blank" href="/movie/:<%= item.id %>">查看</a>
 							</td>
