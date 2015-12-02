@@ -1,0 +1,27 @@
+<% include ../include/head.ejs %>
+
+	<div class="container">
+		<h1><%= title %></h1>
+    	<p>Welcome to <%= title %></p>	
+		
+		<div class="row">
+			<% if(movies.length){ %>
+				<% movies.forEach(function(item){ %>
+					<div class="col-md-2">
+						<div class="thumbnail">
+							<a href="/movie/:<%= item.id %>">
+								<img src="<%= item.picurl %>" alt="<%= item.title %>">
+							</a>
+							<h3><%= item.title %></h3>
+							<p>
+								<a href="/movie/:<%= item.id %>" class="btn btn-primary" role="button">观看预告片</a>
+							</p>
+						</div>
+					</div>
+				<% }) %>
+			<% } %>		
+		</div>	
+
+	</div>	
+
+<% include ../include/foot.ejs %>

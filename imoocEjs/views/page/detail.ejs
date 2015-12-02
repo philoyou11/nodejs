@@ -1,0 +1,37 @@
+<% include ../include/head.ejs %>
+	
+	<div class="container">
+		<h1><%= title %></h1>
+  		<p>Welcome to <%= des %></p>
+	
+		<div class="row">
+			<div class="col-md-7">
+				<p>预告</p>
+				<video width="640" height="500" controls="controls">
+					<source src="<%= movie.flash %>">
+					your browser does not support the video tag	
+				</video>
+			</div>
+			<div class="col-md-5">
+				<dl class="dl-horizontal">
+					<dt>电影名字：</dt>
+					<dd><%= movie.title %></dd>
+					<dt>导演：</dt>
+					<dd><%= movie.director %></dd>
+					<dt>国家：</dt>
+					<dd><%= movie.country %></dd>
+					<dt>语言：</dt>
+					<dd><%= movie.language %></dd>
+					<dt>上映年份：</dt>
+					<dd><%= movie.year %></dd>
+					<dt>简介：</dt>
+					<dd><%= movie.summary %></dd>
+				</dl>
+			</div>
+		</div>	
+
+	</div>
+   
+   
+
+<% include ../include/foot.ejs %>
