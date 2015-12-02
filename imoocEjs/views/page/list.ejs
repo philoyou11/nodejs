@@ -3,23 +3,44 @@
     <div class="container">
     	<h1><%= title %></h1>
     	<p>Welcome to <%= des %></p>
+    	<div class="row movie-row">
+			<a href="/" class="btn btn-info pull-right">go home</a>
+		</div>
 		<div class="row">
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>电影名字</td>
+						<td>导演</td>
+						<td>国家</td>
+						<td>上映年份</td>
+						<td>录入时间</td>
+						<td>查看</td>
+						<td>更新</td>
+						<td>删除</td>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td></td>
-					</tr>
+					<% if(movies.length){ %>
+						<% movies.forEach(function(item){ %>
+						<tr class="item-id-<%= item.id %>">
+							<td><%= item.title %></td>
+							<td><%= item.director %></td>
+							<td><%= item.country %></td>
+							<td><%= item.year %></td>
+							<td><%= moment(item.meta.createdAt).format('MM/DD/YYYY') %></td>
+							<td>
+								<a target="_blank" href="/movie/:<%= item.id %>">查看</a>
+							</td>
+							<td>
+								<a target="_blank" href="/admin/movie/update/:<%= item.id %>">修改</a>
+							</td>
+							<td>
+								<button class="btn btn-danger del" type="button" data-id="<%= item.id %>">删除</button>
+							</td>
+						</tr>
+						<% }) %>
+					<% } %>		
 				</tbody>
 			</table>
 		</div>	

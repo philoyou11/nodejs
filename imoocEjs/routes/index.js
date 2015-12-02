@@ -1,6 +1,6 @@
 var express = require('express'),
+    moment = require('moment'),
     router = express.Router();
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -62,12 +62,45 @@ router.get('/admin', function(req, res, next) {
   });
 });
 
+router.post('/admin/movie/new', function(req, res){
+  res.end('add a new movie');
+});
+
+router.get('/admin/movie/update/:id', function(req, res){
+  res.end('update a movie');
+});
+
 router.get('/list', function(req, res, next) {
   res.render('list', { 
-  	title : 'list',
-  	des   : 'list page',
+  	title   : 'list',
+  	des     : 'list page',
+    moment  : moment,
+    movies  : [
+      {
+        id       : 100,
+        title    : '终结者',
+        director : 'James',
+        country  : 'USA',
+        year     : 2001,
+        meta     : {
+          createdAt : '',
+        },
+      },
+      {
+        id       : 100,
+        title    : '终结者',
+        director : 'James',
+        country  : 'USA',
+        year     : 2001,
+        meta     : {
+          createdAt : '',
+        },
+      },
+    ],
   });
+  next && next();
 });
+
 
 router.get('/movie/:id', function(req, res, next) {
   res.render('detail', { 

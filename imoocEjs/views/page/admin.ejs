@@ -3,8 +3,12 @@
 	<div class="container">
 		<h1><%= title %></h1>
     	<p>Welcome to <%= des %></p>
-		<div class="row">
-			<form action="/admin/movie/new" class="form-horizontal">
+    	<div class="row movie-row">
+			<a href="/" class="btn btn-info pull-right">go home</a>
+			<a href="/list" class="btn btn-warning pull-right">edit list</a>
+		</div>
+		<div class="row"> 
+			<form action="/admin/movie/new" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label for="inputTitle" class="col-sm-2 control-label">电影名字</label>
 					<div class="col-sm-10">
