@@ -1,12 +1,58 @@
 var express = require('express'),
     moment = require('moment'),
     mongoose = require('mongoose'),
-    MovieModel = require('../db_service/model/movie'),
     _ = require('underscore'),
     router = express.Router();
 
-mongoose.connect('mongodb://localhost/imooc');
-  
+var db = mongoose.connect('mongodb://localhost:27017/imooc');
+
+var MovieSchema = new mongoose.Schema({
+  title    : String,
+  director : String,
+  language : String,
+  country  : String,
+  year     : Number,
+  flash    : String,
+  picurl   : String,
+  summary  : String,
+  meta     : {
+    createdAt : {
+      type    : Date,
+      default : Date.now()
+    },
+    updateAt : {
+      type    : Date,
+      default : Date.now()
+    }
+  }
+});
+
+MovieSchema.pre('save', function(next){
+  if (this.isNew) {
+    this.meta.createdAt = this.meta.updateAt = Date.now();
+  } else{
+    this.meta.updateAt = Date.now();
+  };
+  next && next();
+});
+
+MovieSchema.statics = {
+  fetch : function(callback){
+    return this
+      .find({})
+      .sort('meta.updateAt')
+      .exec(callback);
+  },
+  findById : function(id, callback){
+    return this
+      .findOne({id : id})
+      .exec(callback);
+  }
+};
+
+var MovieModel = db.model( 'Movies', MovieSchema);
+
+    
 /* GET home page. */
 router.get('/', function(req, res, next) {
   MovieModel.fetch(function(err, movies){
@@ -97,7 +143,7 @@ router.get('/list', function(req, res, next) {
 
 
 router.get('/movie/:id', function(req, res, next) {
-  var id = req.params.id;
+  var id = req.params._id;
   MovieModel.findById(id, function(err, movie){
     if (err) {
       console.log(err);
