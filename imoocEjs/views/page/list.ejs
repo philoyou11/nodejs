@@ -23,20 +23,20 @@
 				<tbody>
 					<% if(movies.length){ %>
 						<% movies.forEach(function(item){ %>
-						<tr class="item-id-<%= item.id %>">
+						<tr class="item-id-<%= item._id %>">
 							<td><%= item.title %></td>
 							<td><%= item.director %></td>
 							<td><%= item.country %></td>
 							<td><%= item.year %></td>
 							<td><%= moment.unix(item.meta.createdAt) %></td>
 							<td>
-								<a target="_blank" href="/movie/:<%= item.id %>">查看</a>
+								<a target="_blank" href="/movie/:<%= item._id %>">查看</a>
 							</td>
 							<td>
-								<a target="_blank" href="/admin/movie/update/:<%= item.id %>">修改</a>
+								<a target="_blank" href="/admin/movie/update/:<%= item._id %>">修改</a>
 							</td>
 							<td>
-								<button class="btn btn-danger del" type="button" data-id="<%= item.id %>">删除</button>
+								<button class="btn btn-danger del" type="button" data-id="<%= item._id %>">删除</button>
 							</td>
 						</tr>
 						<% }) %>

@@ -11,12 +11,12 @@
 				<% movies.forEach(function(item){ %>
 					<div class="col-md-2">
 						<div class="thumbnail">
-							<a href="/movie/:<%= item.id %>">
+							<a href="/movie/:<%= item._id %>">
 								<img src="<%= item.picurl %>" alt="<%= item.title %>">
 							</a>
 							<h3><%= item.title %></h3>
 							<p>
-								<a href="/movie/:<%= item.id %>" class="btn btn-primary" role="button">观看预告片</a>
+								<a href="/movie/:<%= item._id %>" class="btn btn-primary" role="button">观看预告片</a>
 							</p>
 						</div>
 					</div>
