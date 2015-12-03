@@ -1,7 +1,6 @@
 var express = require('express'),
     moment = require('moment'),
     mongoose = require('mongoose'),
-    _ = require('underscore'),
     router = express.Router();
 
 var db = mongoose.connect('mongodb://localhost:27017/imooc');
@@ -45,7 +44,7 @@ MovieSchema.statics = {
   },
   findById : function(id, callback){
     return this
-      .findOne({id : id})
+      .findOne({_id : id})
       .exec(callback);
   }
 };
@@ -72,61 +71,71 @@ router.get('/admin/movie', function(req, res, next) {
   	title : 'admin',
   	des   : 'admin page',
     movie : {
-      
+      title    : '',
+      director : '',
+      language : '',
+      country  : '',
+      year     : '',
+      summary  : '',
+      flash    : '',
+      picurl   : '',
     },
   });
 });
 
 router.post('/admin/movie/new', function(req, res){
-  var movieObj = req.body.movie,
-      id = movieObj._id,
+  var id = req.body.movieId,
       _movie;
-  if(id !== 'undefined'){
+  if(id !== ''){
     MovieModel.findById(id, function(err, movie){
       if (err) {
         console.log(err);
       };
-      _movie = _.extend(movie, movieObj);
-      _movie.save(function(err, movie){
+      _movie = movie;
+      _movie.save(function(err, _movie){
         if (err) {
           console.log(err);
         };
-        res.redirect('/movie/'+movie.id);
+        res.redirect('/movie/'+_movie.id);
       });
     });
   }else{
     _movie = new MovieModel({
-      title    : movieObj.title,
-      director : movieObj.director,
-      language : movieObj.language,
-      country  : movieObj.country,
-      year     : movieObj.year,
-      summary  : movieObj.summary,
-      flash    : movieObj.flash,
-      picurl   : movieObj.picurl,
+      title    : req.body.title,
+      director : req.body.director,
+      language : req.body.language,
+      country  : req.body.country,
+      year     : req.body.year,
+      summary  : req.body.summary,
+      flash    : req.body.flash,
+      picurl   : req.body.picurl,
     });
     _movie.save(function(err, movie){
       if (err) {
-          console.log(err);
-        };
-        res.redirect('/movie/'+movie.id);
+        console.log(err);
+      };
+      res.redirect('/movie/'+movie.id);
     });
   }    
 });
 
 router.get('/admin/movie/update/:id', function(req, res){
-  var id = req.body.id;
+  var id = req.params.id;
   if (id) {
     MovieModel.findById(id, function(err, movie){
-      res.render('/admin/movie', {
+      if (err) {
+        console.log(err);
+      };
+      res.render('admin', {
         title : movie.title + '更新页',
+        des   : movie.title + '更新页',
         movie : movie
       });
     });
   }
 });
 
-router.get('/list', function(req, res, next) {
+router.get('/list', function(req, res) {
   MovieModel.fetch(function(err, movies){
     if (err) {
       console.log(err);
@@ -138,18 +147,17 @@ router.get('/list', function(req, res, next) {
       movies : movies
     });
   });
-  next && next();
 });
 
 
 router.get('/movie/:id', function(req, res, next) {
-  var id = req.params._id;
+  var id = req.params.id;
   MovieModel.findById(id, function(err, movie){
     if (err) {
       console.log(err);
     };
     res.render('detail', { 
-      title : 'detail' + movie.title,
+      title : 'detail-' + movie.title,
       des   : 'detail page',
       movie : movie
     });
