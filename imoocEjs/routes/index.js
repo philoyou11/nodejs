@@ -1,6 +1,7 @@
 var express = require('express'),
     moment = require('moment'),
     mongoose = require('mongoose'),
+    _ = require('underscore'),
     router = express.Router();
 
 var db = mongoose.connect('mongodb://localhost:27017/imooc');
@@ -37,15 +38,13 @@ MovieSchema.pre('save', function(next){
 
 MovieSchema.statics = {
   fetch : function(callback){
-    return this
-      .find({})
-      .sort('meta.updateAt')
-      .exec(callback);
+    return this.find({}).sort('meta.updateAt').exec(callback);
   },
   findById : function(id, callback){
-    return this
-      .findOne({_id : id})
-      .exec(callback);
+    return this.findOne({_id : id}).exec(callback);
+  },
+  removeById : function(id, callback){
+    this.remove({_id : id}).exec(callback);
   }
 };
 
@@ -84,37 +83,39 @@ router.get('/admin/movie', function(req, res, next) {
 });
 
 router.post('/admin/movie/new', function(req, res){
-  var id = req.body.movieId,
+  var movieObj = req.body, 
+      id = movieObj.movieId,
       _movie;
   if(id !== ''){
     MovieModel.findById(id, function(err, movie){
       if (err) {
         console.log(err);
       };
-      _movie = movie;
-      _movie.save(function(err, _movie){
+      _movie = _.extend(movie, movieObj);
+      _movie.save(function(err, movie){
         if (err) {
           console.log(err);
         };
-        res.redirect('/movie/'+_movie.id);
+        res.redirect('/movie/'+movie._id);
       });
     });
   }else{
     _movie = new MovieModel({
-      title    : req.body.title,
-      director : req.body.director,
-      language : req.body.language,
-      country  : req.body.country,
-      year     : req.body.year,
-      summary  : req.body.summary,
-      flash    : req.body.flash,
-      picurl   : req.body.picurl,
+      title    : movieObj.title,
+      director : movieObj.director,
+      language : movieObj.language,
+      country  : movieObj.country,
+      year     : movieObj.year,
+      summary  : movieObj.summary,
+      flash    : movieObj.flash,
+      picurl   : movieObj.picurl,
     });
     _movie.save(function(err, movie){
       if (err) {
         console.log(err);
       };
-      res.redirect('/movie/'+movie.id);
+      console.log(movie);
+      res.redirect('/movie/'+movie._id);
     });
   }    
 });
@@ -131,6 +132,18 @@ router.get('/admin/movie/update/:id', function(req, res){
         des   : movie.title + '更新页',
         movie : movie
       });
+    });
+  }
+});
+  
+router.post('/admin/movie/delete', function(req, res){
+  var id = req.body.id;
+  if (id) {
+    MovieModel.removeById(id, function(err, movie){
+      if (err) {
+        console.log(err);
+      };
+      res.json({success : 1});
     });
   }
 });

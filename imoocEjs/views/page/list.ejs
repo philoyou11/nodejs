@@ -15,6 +15,7 @@
 						<td>国家</td>
 						<td>上映年份</td>
 						<td>录入时间</td>
+						<td>更新时间</td>
 						<td>查看</td>
 						<td>更新</td>
 						<td>删除</td>
@@ -29,11 +30,12 @@
 							<td><%= item.country %></td>
 							<td><%= item.year %></td>
 							<td><%= moment(item.meta.createdAt).format('YYYY-MM-DD') %></td>
+							<td><%= moment(item.meta.updateAt).format('YYYY-MM-DD') %></td>
 							<td>
 								<a target="_blank" href="/movie/<%= item._id %>">查看</a>
 							</td>
 							<td>
-								<a target="_blank" href="/admin/movie/update/<%= item._id %>">修改</a>
+								<a target="_blank" href="/admin/movie/update/<%= item._id %>">更新</a>
 							</td>
 							<td>
 								<button class="btn btn-danger del" type="button" data-id="<%= item._id %>">删除</button>
@@ -46,5 +48,6 @@
 		</div>	
     </div>
 
+	<script src="javascripts/listedit.js"></script>
   	
 <% include ../include/foot.ejs %>
