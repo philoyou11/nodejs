@@ -48,7 +48,7 @@ MovieSchema.statics = {
   }
 };
 
-var MovieModel = db.model( 'Movies', MovieSchema);
+var MovieModel = db.model( 'movies', MovieSchema);
 
     
 /* GET home page. */
