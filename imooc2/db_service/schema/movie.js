@@ -32,15 +32,13 @@ MovieSchema.pre('save', function(next){
 
 MovieSchema.statics = {
   fetch : function(callback){
-    return this
-      .find({})
-      .sort('meta.updateAt')
-      .exec(callback);
+    return this.find({}).sort('meta.updateAt').exec(callback);
   },
   findById : function(id, callback){
-    return this
-      .findOne({id : id})
-      .exec(callback);
+    return this.findOne({_id : id}).exec(callback);
+  },
+  removeById : function(id, callback){
+    this.remove({_id : id}).exec(callback);
   }
 };
 

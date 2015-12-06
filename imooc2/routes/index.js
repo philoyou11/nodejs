@@ -1,55 +1,11 @@
 var express = require('express'),
     moment = require('moment'),
     mongoose = require('mongoose'),
+    MovieModel = require('../db_service/model/movie'),
     _ = require('underscore'),
     router = express.Router();
 
-var db = mongoose.connect('mongodb://localhost:27017/imooc');
-
-var MovieSchema = new mongoose.Schema({
-  title    : String,
-  director : String,
-  language : String,
-  country  : String,
-  year     : Number,
-  flash    : String,
-  picurl   : String,
-  summary  : String,
-  meta     : {
-    createdAt : {
-      type    : Date,
-      default : Date.now()
-    },
-    updateAt : {
-      type    : Date,
-      default : Date.now()
-    }
-  }
-});
-
-MovieSchema.pre('save', function(next){
-  if (this.isNew) {
-    this.meta.createdAt = this.meta.updateAt = Date.now();
-  } else{
-    this.meta.updateAt = Date.now();
-  };
-  next && next();
-});
-
-MovieSchema.statics = {
-  fetch : function(callback){
-    return this.find({}).sort('meta.updateAt').exec(callback);
-  },
-  findById : function(id, callback){
-    return this.findOne({_id : id}).exec(callback);
-  },
-  removeById : function(id, callback){
-    this.remove({_id : id}).exec(callback);
-  }
-};
-
-var MovieModel = db.model( 'movies', MovieSchema);
-
+mongoose.connect('mongodb://localhost:27017/imooc');
     
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -148,7 +104,7 @@ router.post('/admin/movie/delete', function(req, res){
   }
 });
 
-router.get('/list', function(req, res) {
+router.get('/admin/list', function(req, res) {
   MovieModel.fetch(function(err, movies){
     if (err) {
       console.log(err);

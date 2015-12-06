@@ -148,7 +148,7 @@ router.post('/admin/movie/delete', function(req, res){
   }
 });
 
-router.get('/list', function(req, res) {
+router.get('/admin/list', function(req, res) {
   MovieModel.fetch(function(err, movies){
     if (err) {
       console.log(err);
