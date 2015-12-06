@@ -1,0 +1,87 @@
+<% include ../include/head.ejs %>
+		
+	<div class="container">
+		<h1><%= title %></h1>
+    	<p>Welcome to <%= des %></p>
+    	<div class="row movie-row">
+			<a href="/" class="btn btn-info pull-right">go home</a>
+			<a href="/list" class="btn btn-warning pull-right">edit list</a>
+		</div>
+		<div class="row"> 
+			<form action="/admin/movie/new" method="post" class="form-horizontal">
+				<input type="hidden" name="movieId" value="<%= movie._id %>">
+				<div class="form-group">
+					<label for="inputTitle" class="col-sm-2 control-label">电影名字</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputTitle" class="form-control" name="title" value="<%= movie.title %>">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputDirector" class="col-sm-2 control-label">电影导演</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputDirector" class="form-control" name="director" value="<%= movie.director %>">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputCountry" class="col-sm-2 control-label">国家</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputCountry" class="form-control" name="country" value="<%= movie.country %>">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="inputLanguage" class="col-sm-2 control-label">语种</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputLanguage" class="form-control" name="language" value="<%= movie.language %>">
+					</div>
+				</div>			
+				<div class="form-group">
+					<label for="inputPicurl" class="col-sm-2 control-label">海报封面</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputPicurl" class="form-control" name="picurl" value="<%= movie.picurl %>">
+					</div>
+				</div>	
+				<div class="form-group">
+					<label for="inputFlash" class="col-sm-2 control-label">预告地址</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputFlash" class="form-control" name="flash" value="<%= movie.flash %>">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputYear" class="col-sm-2 control-label">上映年代</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputYear" class="form-control" name="year" value="<%= movie.year %>">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputSummary" class="col-sm-2 control-label">电影简介</label>
+					<div class="col-sm-10">
+						<input type="text" id="inputSummary" class="form-control" name="summary" value="<%= movie.summary %>">
+					</div>
+				</div>	
+			
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input type="submit" class="btn btn-primary" value="确定">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+    	
+	  	
+<% include ../include/foot.ejs %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
