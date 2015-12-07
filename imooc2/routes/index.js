@@ -7,8 +7,6 @@ var express = require('express'),
 
 mongoose.connect('mongodb://localhost:27017/imooc');
 
-
-    
 /* GET home page. */
 router.get('/', function(req, res, next) {
   MovieModel.fetch(function(err, movies){
