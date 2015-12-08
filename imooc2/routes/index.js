@@ -1,13 +1,27 @@
 var express = require('express'),
     moment = require('moment'),
     mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
     MovieModel = require('../db_service/model/movie'),
+    UserModel = require('../db_service/model/user'),
     _ = require('underscore'),
     router = express.Router();
 
 mongoose.connect('mongodb://localhost:27017/imooc');
 
-/* GET home page. */
+/* 用户注册 */
+router.post('/user/regist', function(req, res){
+  var _user = req.body,
+      user = new UserModel(_user);
+  user.save(function(err, user){
+    if (err) {
+      console.log(err);
+    };
+    res.redirect('/');
+  });    
+});
+
+/* 首页 */
 router.get('/', function(req, res, next) {
   MovieModel.fetch(function(err, movies){
     if (err) {
@@ -21,6 +35,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
+/* 添加电影字段页 */
 router.get('/admin/movie', function(req, res, next) {
   res.render('admin', { 
   	title : 'admin',
@@ -38,6 +53,7 @@ router.get('/admin/movie', function(req, res, next) {
   });
 });
 
+/* 添加新的电影 */
 router.post('/admin/movie/new', function(req, res){
   var movieObj = req.body, 
       id = movieObj.movieId,
@@ -70,12 +86,12 @@ router.post('/admin/movie/new', function(req, res){
       if (err) {
         console.log(err);
       };
-      console.log(movie);
       res.redirect('/movie/'+movie._id);
     });
   }    
 });
 
+/* 更新电影 */
 router.get('/admin/movie/update/:id', function(req, res){
   var id = req.params.id;
   if (id) {
@@ -91,7 +107,8 @@ router.get('/admin/movie/update/:id', function(req, res){
     });
   }
 });
-  
+
+/* 删除电影 */  
 router.post('/admin/movie/delete', function(req, res){
   var id = req.body.id;
   if (id) {
@@ -104,6 +121,7 @@ router.post('/admin/movie/delete', function(req, res){
   }
 });
 
+/* 电影编辑列表页 */
 router.get('/admin/list', function(req, res) {
   MovieModel.fetch(function(err, movies){
     if (err) {
@@ -118,7 +136,7 @@ router.get('/admin/list', function(req, res) {
   });
 });
 
-
+/* 电影详情页 */
 router.get('/movie/:id', function(req, res, next) {
   var id = req.params.id;
   MovieModel.findById(id, function(err, movie){
