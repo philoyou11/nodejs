@@ -11,14 +11,38 @@ mongoose.connect('mongodb://localhost:27017/imooc');
 
 /* 用户注册 */
 router.post('/user/regist', function(req, res){
-  var _user = req.body,
-      user = new UserModel(_user);
-  user.save(function(err, user){
+  var _user = req.body;
+  UserModel.find({name : _user.name}, function(err, user){
+    if (err) {
+        console.log(err);
+    };
+    if(user){
+        return res.redirect('/');
+    }else{
+        var user = new UserModel(_user);
+        user.save(function(err, user){
+        if (err) {
+          console.log(err);
+        };
+        res.redirect('/user/list');
+      });
+    }
+  });        
+});
+
+/* 用户列表 */
+router.get('/user/list', function(req, res){
+  UserModel.fetch(function(err, users){
     if (err) {
       console.log(err);
     };
-    res.redirect('/');
-  });    
+    res.render('userlist', {
+      title  : 'User list',
+      des    : 'User list page', 
+      moment : moment,
+      users  : users 
+    });
+  });
 });
 
 /* 首页 */
